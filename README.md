@@ -66,6 +66,6 @@ grocery-shop/ │ ├── app.py # Main Flask app entry point
 git clone https://github.com/your-username/grocery-shop.git
 cd grocery-shop
 ```
-## Create virtual invironment
+## Create virtual environment
 python -m venv venv
 source venv/bin/activate      # Windows: venv\Scripts\activate

@@ -1,0 +1,62 @@
+{% extends 'layout.html' %}
+
+{% block title %}
+    Login Page
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="bg-light p-5 rounded-4 shadow-sm border">
+                <h1 class="mb-4 text-center display-6 fw-bold">Welcome Back</h1>
+
+                <form action="" method="post">
+                    <div class="mb-3">
+                        <label for="username" class="form-label fw-semibold">Username</label>
+                        <input type="text" name="username" class="form-control rounded-pill" placeholder="Enter your username" required>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="password" class="form-label fw-semibold">Password</label>
+                        <input type="password" name="password" class="form-control rounded-pill" placeholder="Enter your password" required>
+                    </div>
+
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary rounded-pill py-2">
+                            <i class="fas fa-sign-in-alt me-2"></i> Login
+                        </button>
+                    </div>
+                </form>
+
+                <p class="mt-4 text-center text-muted">
+                    Don't have an account? 
+                    <a href="{{ url_for('register') }}" class="text-decoration-none">Register here</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block style %}
+<style>
+    input:focus {
+        box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        transition: 0.3s;
+    }
+
+    label {
+        font-size: 0.95rem;
+    }
+
+    .btn-primary {
+        background: linear-gradient(to right, #0062E6, #0052B4);
+        border: none;
+    }
+
+    .form-control {
+        padding: 0.75rem 1.25rem;
+    }
+</style>
+{% endblock %}

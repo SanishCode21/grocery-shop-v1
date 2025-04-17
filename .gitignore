@@ -1,0 +1,51 @@
+instance
+static/csv
+
+*.pyc
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Flask instance folder (contains config or uploads sometimes)
+instance/
+
+# Environment variables / secret keys
+.env
+
+# SQLite database file
+*.sqlite3
+*.db
+
+# Flask cache or session files
+*.log
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# VS Code settings (optional)
+.vscode/
+
+# Pytest / test cache
+.pytest_cache/
+.cache/
+
+# macOS files
+.DS_Store
+
+# Node modules (if frontend uses npm)
+node_modules/
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Python egg files
+*.egg-info/
+dist/
+build/
+

@@ -1,4 +1,5 @@
 import csv
+import os
 from uuid import uuid4
 from flask import Flask, render_template, request, redirect, url_for, session, flash
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -71,8 +72,6 @@ def register_post():
     db.session.commit()
     return redirect(url_for('login'))
 
-
-# ----
 
 # decorator for auth_required
 
@@ -291,7 +290,9 @@ def add_product_post():
 def edit_product(id):
     categories = Category.query.all()
     product = Product.query.get(id)
-    return render_template('product/edit.html', categories=categories, product=product)
+    category_id = product.category_id # type: ignore # get category_id from product
+
+    return render_template('product/edit.html', categories=categories, product=product, category_id=category_id)
 
 @app.route('/product/<int:id>/edit', methods=['POST'])
 @admin_required
@@ -341,10 +342,11 @@ def edit_product_post(id):
 @admin_required
 def delete_product(id):
     product = Product.query.get(id)
+    category_id = product.category_id # type: ignore
     if not product:
         flash('Product does not exist')
         return redirect(url_for('admin'))
-    return render_template('product/delete.html', product=product)
+    return render_template('product/delete.html', product=product, category_id=category_id)
 
 @app.route('/product/<int:id>/delete', methods=['POST'])
 @admin_required
@@ -361,7 +363,7 @@ def delete_product_post(id):
     return redirect(url_for('show_category', id=category_id))
 
 
-# ---- user routes  
+# ---------------------- user routes ----------------------------  
 
 @app.route('/')
 @auth_required
@@ -372,8 +374,8 @@ def index():
 
     categories = Category.query.all()
 
-    cname = request.args.get('cname') or ''
-    pname = request.args.get('pname') or ''
+    cat_name = request.args.get('cname') or ''
+    prod_name = request.args.get('pname') or ''
     price = request.args.get('price')
 
     if price:
@@ -386,10 +388,10 @@ def index():
             flash('Invalid price')
             return redirect(url_for('index'))
 
-    if cname:
-        categories = Category.query.filter(Category.name.ilike(f'%{cname}%')).all()
+    if cat_name:
+        categories = Category.query.filter(Category.name.ilike(f'%{cat_name}%')).all()
 
-    return render_template('index.html', categories=categories, cname=cname, pname=pname, price=price)
+    return render_template('index.html', categories=categories, cname=cat_name, pname=prod_name, price=price)
 
 @app.route('/add_to_cart/<int:product_id>', methods=['POST'])
 @auth_required
@@ -476,16 +478,34 @@ def orders():
     transactions = Transaction.query.filter_by(user_id=session['user_id']).order_by(Transaction.datetime.desc()).all()
     return render_template('orders.html', transactions=transactions)
 
+
 @app.route('/export_csv')
 @auth_required
 def export_csv():
     transactions = Transaction.query.filter_by(user_id=session['user_id']).all()
-    filename = uuid4().hex + '.csv'
-    url = 'static/csv/' + filename
-    with open(url, 'w', newline='') as file:
+
+    # Ensure the 'static/csv' directory exists
+    export_dir = os.path.join('static', 'csv')
+    os.makedirs(export_dir, exist_ok=True)
+
+    # Generate a unique filename
+    filename = f"{uuid4().hex}.csv"
+    filepath = os.path.join(export_dir, filename)
+
+    # Write to CSV
+    with open(filepath, 'w', newline='', encoding='utf-8') as file:
         writer = csv.writer(file)
         writer.writerow(['transaction_id', 'datetime', 'product_name', 'quantity', 'price'])
+
         for transaction in transactions:
             for order in transaction.orders:
-                writer.writerow([transaction.id, transaction.datetime, order.product.name, order.quantity, order.price])
-    return redirect(url_for('static', filename='csv/'+filename))
+                writer.writerow([
+                    transaction.id,
+                    transaction.datetime.strftime('%Y-%m-%d %H:%M:%S'),  # Format datetime
+                    order.product.name,
+                    order.quantity,
+                    order.price
+                ])
+
+    # Redirect user to download the CSV
+    return redirect(url_for('static', filename=f'csv/{filename}'))

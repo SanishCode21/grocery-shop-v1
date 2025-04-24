@@ -1,22 +1,31 @@
-
 {% extends 'layout.html' %}
 
 {% block title %}
-    Delete Category
+Delete Category
 {% endblock %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 rounded-4">
+        <div class="card-header bg-danger text-white rounded-top-4">
+            <h2 class="mb-0">
+                <i class="fas fa-exclamation-triangle me-2"></i> Confirm Deletion
+            </h2>
+        </div>
+        <div class="card-body p-4">
+            <h4 class="text-dark">Are you sure you want to delete the category:</h4>
+            <h3 class="text-danger fw-bold my-3">{{ category.name }}</h3>
+            <p class="text-muted">This action cannot be undone and will remove all associated data.</p>
 
-<h1 class="display-1">
-    Delete Category
-</h1>
-<p class="f-3">Are you sure you want to delete {{category.name}}?</p>
-
-<form action="" method="post" class="form">
-    <button type="submit" class="btn btn-danger">
-        <i class="fas fa-trash    "></i>
-        Delete
-    </button>
-</form>
-
+            <form action="{{ url_for('delete_category_post', id=category.id) }}" method="post" class="d-flex justify-content-between mt-4">
+                <a href="{{ url_for('admin') }}" class="btn btn-secondary px-4 py-2 rounded-pill">
+                    <i class="fas fa-arrow-left me-1"></i> Cancel
+                </a>
+                <button type="submit" class="btn btn-danger px-4 py-2 rounded-pill">
+                    <i class="fas fa-trash-alt me-1"></i> Delete
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

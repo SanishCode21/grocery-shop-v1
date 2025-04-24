@@ -12,11 +12,14 @@
 </h1>
 <p class="f-3">Are you sure you want to delete {{product.name}}?</p>
 
-<form action="" method="post" class="form">
+<form action="{{ url_for('delete_product_post', id=product.id) }}" method="post" class="form">
     <button type="submit" class="btn btn-danger">
         <i class="fas fa-trash    "></i>
         Delete
     </button>
+    <a href="{{ url_for('show_category', id=category_id) }}" class="btn btn-danger px-4 py-2 rounded-pill">
+        <i class="fas fa-arrow-left me-1"></i> Cancel
+    </a>
 </form>
 
 {% endblock %}

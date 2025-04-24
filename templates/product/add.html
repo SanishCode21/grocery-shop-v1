@@ -1,68 +1,59 @@
 {% extends 'layout.html' %}
 
 {% block title %}
-    Add Product
+Add Product
 {% endblock %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg rounded-4">
+        <div class="card-header bg-success text-white rounded-top-4">
+            <h2 class="mb-0"><i class="fas fa-plus-circle me-2"></i> Add New Product</h2>
+        </div>
+        <div class="card-body p-4">
+            <form action="{{ url_for('add_product_post') }}" method="post">
+                <div class="mb-3">
+                    <label for="name" class="form-label">Product Name</label>
+                    <input type="text" name="name" id="name" class="form-control" placeholder="Enter product name"
+                        required>
+                </div>
 
-<h1 class="display-1">
-    Add Product
-</h1>
+                <div class="mb-3">
+                    <label for="price" class="form-label">Price (₹)</label>
+                    <input type="number" name="price" id="price" min="1" value="1" class="form-control" required>
+                </div>
 
-<form action="{{url_for('add_product_post')}}" method="post" class="form">
-    <div class="form-group">
-        <label for="name" class="form-label">Product Name:</label>
-        <input type="text" 
-        name="name" 
-        id="name" 
-        class="form-control" 
-        required>
-    </div>
-    <div class="form-group">
-        <label for="price" class="form-label">Price:</label>
-        <input type="number" 
-        name="price" 
-        id="price" 
-        min="1"
-        value="1"
-        class="form-control" 
-        required>
-    </div>
-    <div class="form-group">
-        <label for="category_id" class="form-label">Category:</label>
-        <select name="category_id" id="category_id" class="form-control" required>
-            {% for cat in categories %}
-            {% if cat.id == category.id %}
-                <option selected value="{{cat.id}}">{{cat.name}}</option>
-            {% else %}
-                <option value="{{cat.id}}">{{cat.name}}</option>
-            {% endif %}
-            {% endfor %}
-        </select>
+                <div class="mb-3">
+                    <label for="category_id" class="form-label">Category</label>
+                    <select name="category_id" id="category_id" class="form-select" required>
+                        {% for cat in categories %}
+                        <option value="{{ cat.id }}" {% if cat.id==category.id %}selected{% endif %}>
+                            {{ cat.name }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
 
+                <div class="mb-3">
+                    <label for="quantity" class="form-label">Quantity</label>
+                    <input type="number" name="quantity" id="quantity" min="1" value="1" class="form-control" required>
+                </div>
 
-    </div>
-    <div class="form-group">
-        <label for="quantity" class="form-label">Quantity:</label>
-        <input type="number" 
-        name="quantity" 
-        id="quantity" 
-        min="1"
-        value="1"
-        class="form-control" 
-        required>
-    </div>
-    <div class="form-group">
-        <label for="man_date" class="form-label">Manufacture Date:</label>
-        <input type="date" name="man_date" id="man_date" required
-        value="{{now}}"
-         class="form-control">
-    </div>
-    <button type="submit" class="btn btn-success">
-        <i class="fas fa-plus    "></i>
-        Add
-    </button>
-</form>
+                <div class="mb-3">
+                    <label for="man_date" class="form-label">Manufacture Date</label>
+                    <input type="date" name="man_date" id="man_date" value="{{ now }}" class="form-control" required>
+                </div>
 
+                <div class="text-end">
+                    <button type="submit" class="btn btn-success px-4 py-2 rounded-pill">
+                        <i class="fas fa-plus me-1"></i> Add Product
+                    </button>
+                    <a href="{{ url_for('show_category', id=category.id) }}" class="btn btn-danger px-4 py-2 rounded-pill">
+                        <i class="fas fa-arrow-left me-1"></i> Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 {% endblock %}

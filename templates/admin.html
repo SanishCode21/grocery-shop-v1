@@ -34,14 +34,14 @@ Admin Dashboard
           <td>{{category.products|length}}</td>
           <td>
             <div class="btn-group" role="group">
-              <a href="{{url_for('show_category', id=category.id)}}" class="btn btn-sm btn-outline-primary">
-                <i class="fas fa-search"></i>
+              <a type="button" href="{{url_for('show_category', id=category.id)}}" class="btn btn-primary">
+                <i class="fas fa-search"></i>Products
               </a>
-              <a href="{{url_for('edit_category', id=category.id)}}" class="btn btn-sm btn-outline-warning">
-                <i class="fas fa-edit"></i>
+              <a type="button" href="{{url_for('edit_category', id=category.id)}}" class="btn btn-warning">
+                <i class="fas fa-edit"></i>Edit
               </a>
-              <a href="{{url_for('delete_category', id=category.id)}}" class="btn btn-sm btn-outline-danger">
-                <i class="fas fa-trash"></i>
+              <a type="button" href="{{url_for('delete_category', id=category.id)}}" class="btn btn-danger">
+                <i class="fas fa-trash"></i>Delete
               </a>
             </div>
           </td>
@@ -55,7 +55,7 @@ Admin Dashboard
 
   <h2 class="h3 mb-3 text-primary">Category Summary</h2>
   <div class="card shadow-sm p-3">
-    <canvas id="myChart" height="120"></canvas>
+    <canvas id="myChart" height="300"></canvas>
   </div>
 </div>
 
@@ -107,8 +107,20 @@ Admin Dashboard
       datasets: [{
         label: 'Number of Products',
         data: {{ category_sizes | safe }},
-        backgroundColor: 'rgba(54, 162, 235, 0.6)',
-        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.6)',
+          'rgba(54, 162, 235, 0.6)',
+          'rgba(255, 206, 86, 0.6)',
+          'rgba(75, 192, 192, 0.6)',
+          'rgba(153, 102, 255, 0.6)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)'
+        ],
         borderWidth: 1
       }]
     },
@@ -123,4 +135,5 @@ Admin Dashboard
     }
   });
 </script>
+
 {% endblock %}
